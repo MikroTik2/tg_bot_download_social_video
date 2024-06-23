@@ -9,8 +9,8 @@ const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => 
                                     webhook: {
                                                 domain: 'tg-bot-download-social-video.vercel.app',
                                                 hookPath: '/webhook',
-                                    }
-                        }
+                                    },
+                        },
             };
 };
 
