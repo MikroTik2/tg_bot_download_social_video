@@ -15,9 +15,6 @@ export class TelegramService extends Telegraf<Context> {
                         private readonly download: DownloadService,
             ) {
                         super(config.get('TELEGRAM_BOT_TOKEN'));
-
-                        const webhookUrl = `https://tg-bot-download-social-video.vercel.app/webhook`; // Replace with your actual webhook URL
-                        this.telegram.setWebhook(webhookUrl);
             };
 
             @Start()
