@@ -34,7 +34,7 @@ export class DownloadService {
             const stream = ytdl(url, { filter: "audio", quality: "highestvideo" });
             
             const buffer: Buffer = await this.streamToBuffer(stream)
-            const path = `src/common/download/${info.videoDetails.title}.${format}`;
+            const path = `src/common/download/${info.videoDetails.videoId}.${format}`;
             
             await fs.promises.writeFile(path, buffer);
 
@@ -106,9 +106,5 @@ export class DownloadService {
         } else {
             return { error: 'Неверный URL: ' + url };  
         };
-    };
-
-    async downloadMp3() {
-
     };
 };
