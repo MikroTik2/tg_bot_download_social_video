@@ -1,7 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
-import { DownloadService } from '@/download/download.service';
+import { DownloadService } from '../download/download.service';
 
 type Context = Scenes.SceneContext;
 
