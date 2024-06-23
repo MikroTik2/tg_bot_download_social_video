@@ -1,5 +1,5 @@
 import { ConfigService } from "@nestjs/config";
-import { InjectBot, Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
+import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '@/download/download.service';
 
