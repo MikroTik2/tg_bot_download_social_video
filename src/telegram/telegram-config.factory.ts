@@ -7,7 +7,7 @@ const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => 
                         launchOptions: {
                                     dropPendingUpdates: true,
                                     webhook: {
-                                                domain: 'tg-bot-download-social-video.vercel.app',
+                                                domain: 'https://tg-bot-download-social-video.vercel.app',
                                                 path: '/webhook'
                                     }
                         }
