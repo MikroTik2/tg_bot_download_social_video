@@ -4,6 +4,7 @@ import { TelegramService } from "../telegram/telegram.service";
 import { options } from "../telegram/telegram-config.factory";
 import { DownloadModule } from "../download/download.module";
 import { WebhookController } from "./telegram.controller";
+import { Telegraf } from "telegraf";
 
 @Module({
             imports: [
@@ -12,7 +13,7 @@ import { WebhookController } from "./telegram.controller";
             ],
             
             controllers: [WebhookController],
-            providers: [TelegramService],
+            providers: [TelegramService, Telegraf],
 })
 
 export class TelegramModule {};
