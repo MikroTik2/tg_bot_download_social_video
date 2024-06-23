@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TelegramModule } from "@/telegram/telegram.module";
+import { WebhookController } from "@/webhook/webhook.controller";
 
 @Module({
   imports: [
@@ -11,6 +12,8 @@ import { TelegramModule } from "@/telegram/telegram.module";
 
     TelegramModule,
   ],
+
+  controllers: [WebhookController],
 })
 
 export class AppModule {};
