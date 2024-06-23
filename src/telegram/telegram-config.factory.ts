@@ -4,6 +4,13 @@ import { TelegrafModuleAsyncOptions, TelegrafModuleOptions } from "nestjs-telegr
 const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => {
             return {
                         token: config.get('TELEGRAM_BOT_TOKEN'),
+                        launchOptions: {
+                                    dropPendingUpdates: true,
+                                    webhook: {
+                                                domain: 'tg-bot-download-social-video.vercel.app',
+                                                hookPath: '/webhook',
+                                    },
+                        },
             };
 };
 
