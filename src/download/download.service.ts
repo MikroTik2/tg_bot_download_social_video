@@ -16,7 +16,7 @@ export class DownloadService {
         private readonly httpService: HttpService,
     ) {};
             
-    async downloadYouTube(url: string): Promise<any> {
+    async downloadYouTube(url: string) {
         if (url.startsWith('https://www.youtube.com/')) {
 
         //     const info = await ytdl.getInfo(url);
