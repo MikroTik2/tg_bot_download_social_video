@@ -3,7 +3,10 @@ import { Module } from '@nestjs/common';
 import { DownloadService } from './download.service';
 
 @Module({
-    imports: [HttpModule],
+    imports: [
+        HttpModule,                 
+    ],
+    
     providers: [DownloadService],
     exports: [DownloadService],
 })

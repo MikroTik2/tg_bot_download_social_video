@@ -3,43 +3,37 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import ytdl from 'ytdl-core';
-import fs from 'fs';
+import * as ytdl from 'ytdl-core';
+import * as fs from 'fs';
 
 @Injectable()
 export class DownloadService {
 
-    private insta_api = 'https://instagram-story-downloader-media-downloader.p.rapidapi.com/index'
-    private tt_api = 'https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index'
+    private insta_api = 'https://instagram-story-downloader-media-downloader.p.rapidapi.com/index';
+    private tt_api = 'https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index';
 
     constructor(
         private readonly configService: ConfigService,
         private readonly httpService: HttpService,
     ) {};
-
-    async streamToBuffer(stream: any): Promise<Buffer> {
-        return new Promise((resolve, reject) => {
-            const chunks = [];
-
-            stream.on("data", (chunk) => chunks.push(chunk));
-            stream.on("end", () => resolve(Buffer.concat(chunks)));
-            stream.on("error", reject);
-        });
-    };
             
     async downloadYouTube(url: string, format: string): Promise<any> {
-        if (url.startsWith('https://www.youtube.com/')) {
+        if (url?.startsWith('https://www.youtube.com/')) {
 
             const info = await ytdl.getInfo(url);
-            const stream = ytdl(url, { filter: "audio", quality: "highestvideo" });
-            
-            const buffer: Buffer = await this.streamToBuffer(stream)
-            const path = `src/common/download/${info.videoDetails.videoId}.${format}`;
-            
-            await fs.promises.writeFile(path, buffer);
+
+            const filePath = `downloads/${info.videoDetails.videoId}.${format}`;
+            const videoStream = ytdl(url, { filter: "audio", quality: "highestvideo" });
+
+            await new Promise((resolve, reject) => {
+                const writableStream = fs.createWriteStream(filePath);
+                videoStream.pipe(writableStream);
+                writableStream.on('finish', resolve);
+                writableStream.on('error', reject);
+            });
 
             return { 
-                path: path, 
+                path: filePath, 
                 info_video: info.videoDetails,
                 author: info.videoDetails.author
             };
@@ -70,7 +64,7 @@ export class DownloadService {
                         throw new Error('Ошибка при запросе');
                     }),
                 ));
-            
+
             return response;
         } else {
             return { error: 'Неверный URL: ' + url };  
