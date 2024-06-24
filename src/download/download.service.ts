@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import ytdl from 'ytdl-core';
+import * as ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
@@ -62,7 +62,7 @@ export class DownloadService {
     };
 
     async downloadTikTok(url: string) {
-        if (url.startsWith('https://www.tiktok.com/')) {
+        if (url.startsWith('https://www.tiktok.com/' || 'https://vm.tiktok.com/')) {
 
             const options = {
                 method: "GET",
