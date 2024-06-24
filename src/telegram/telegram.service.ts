@@ -45,7 +45,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             async sendMp3Video(@Ctx() ctx: Context) {
                         await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
 
-                        const info = await this.download.downloadYouTube(this._message, 'mp3');
+                        const info = await this.download.downloadYouTube(this._message);
                         if (info.error) await ctx.replyWithHTML(info.error);
 
                         await ctx.sendAudio({ source: info.path }, {
@@ -65,7 +65,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             async sendMp4Video(@Ctx() ctx: Context) {
                         await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
 
-                        const info = await this.download.downloadYouTube(this._message, 'mp4');
+                        const info = await this.download.downloadYouTube(this._message);
                         if (info.error) await ctx.replyWithHTML(info.error);
 
                         await ctx.replyWithVideo({ source: info.path }, {
