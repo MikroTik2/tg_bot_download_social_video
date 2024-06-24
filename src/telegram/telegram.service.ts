@@ -7,7 +7,7 @@ import { OnModuleInit } from "@nestjs/common";
 type Context = Scenes.SceneContext;
 
 @Update()
-export class TelegramService extends Telegraf<Context> {
+export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 
             private _message;
 
@@ -18,18 +18,18 @@ export class TelegramService extends Telegraf<Context> {
                         super(config.get('TELEGRAM_BOT_TOKEN'));
             };
             
-            // async onModuleInit() {
+            async onModuleInit() {
                         
-            //             await this.launch({
-            //                         dropPendingUpdates: true,
-            //                         webhook: {
-            //                                     domain: 'tg-bot-download-social-video.vercel.app',
-            //                                     hookPath: '/webhook',
-            //                                     port: 4000,
-            //                         },
-            //             });
+                        await this.launch({
+                                    dropPendingUpdates: true,
+                                    webhook: {
+                                                domain: 'tg-bot-download-social-video.vercel.app',
+                                                hookPath: '/webhook',
+                                                port: 4000,
+                                    },
+                        });
 
-            // };implements OnModuleInit
+            };
 
             @Start()
             async onStart(@Ctx() ctx: Context) {
