@@ -29,7 +29,6 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                                     },
                         });
 
-                        console.log(`Webhook bot listening on port ${4000}`);
             };
 
             @Start()

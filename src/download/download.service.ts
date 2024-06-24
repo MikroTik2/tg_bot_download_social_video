@@ -20,27 +20,13 @@ export class DownloadService {
         if (url?.startsWith('https://www.youtube.com/')) {
 
             const info = await ytdl.getInfo(url);
+            const stream = ytdl(url, { filter: "audio", quality: "highestvideo" })
 
-            if (format === 'mp4') {
-                const stream = ytdl(url, { filter: "audio", quality: "highestvideo" }).filter(format => format.container === 'mp4');
-
-                return { 
-                    path: stream, 
-                    info_video: info.videoDetails,
-                    author: info.videoDetails.author
-                };
+            return { 
+                path: stream, 
+                info_video: info.videoDetails,
+                author: info.videoDetails.author
             };
-
-            if (format === 'mp3') {
-                const stream = ytdl(url, { filter: "audio", quality: "highestvideo" }).filter(format => format.container === 'mp3');
-
-                return { 
-                    path: stream, 
-                    info_video: info.videoDetails,
-                    author: info.videoDetails.author
-                };
-            };
-
         } else {
             return { error: 'Неверный URL: ' + url };
         };
