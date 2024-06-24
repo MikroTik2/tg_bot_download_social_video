@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import ytdl from 'ytdl-core';
+import * as ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
@@ -17,21 +17,34 @@ export class DownloadService {
     ) {};
             
     async downloadYouTube(url: string, format?: string): Promise<any> {
-            if (url?.startsWith('https://www.youtube.com/')) {
-    
-                const info = await ytdl.getInfo(url);
-                const stream = ytdl(url, { filter: "audio", quality: "highestvideo" });
-    
+        if (url?.startsWith('https://www.youtube.com/')) {
+
+            const info = await ytdl.getInfo(url);
+
+            if (format === 'mp4') {
+                const stream = ytdl(url, { filter: "audio", quality: "highestvideo" }).filter(format => format.container === 'mp4');
+
                 return { 
                     path: stream, 
                     info_video: info.videoDetails,
                     author: info.videoDetails.author
                 };
-    
-            } else {
-                return { error: 'Неверный URL: ' + url };
             };
+
+            if (format === 'mp3') {
+                const stream = ytdl(url, { filter: "audio", quality: "highestvideo" }).filter(format => format.container === 'mp3');
+
+                return { 
+                    path: stream, 
+                    info_video: info.videoDetails,
+                    author: info.videoDetails.author
+                };
+            };
+
+        } else {
+            return { error: 'Неверный URL: ' + url };
         };
+    };
 
     async downloadInstagram(url: string) {
         if (url.startsWith('https://www.instagram.com/')) {
