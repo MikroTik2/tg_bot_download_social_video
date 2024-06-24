@@ -17,7 +17,7 @@ export class DownloadService {
     ) {};
             
     async downloadYouTube(url: string, format?: string): Promise<any> {
-        // if (url?.startsWith('https://www.youtube.com/')) {
+        if (url?.startsWith('https://www.youtube.com/')) {
 
         //     const info = await ytdl.getInfo(url);
         //     const stream = ytdl(url, { filter: "audio", quality: "highestvideo" })
@@ -27,9 +27,9 @@ export class DownloadService {
         //         info_video: info.videoDetails,
         //         author: info.videoDetails.author
         //     };
-        // } else {
-        //     return { error: 'Неверный URL: ' + url };
-        // };
+        } else {
+            return { error: 'Неверный URL: ' + url };
+        };
     };
 
     async downloadInstagram(url: string) {
