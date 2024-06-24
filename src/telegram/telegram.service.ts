@@ -19,34 +19,14 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
             
             async onModuleInit() {
-                        console.log('Launching Telegram bot with webhook settings');
-                        try {
-                            await this.launch({
-                                dropPendingUpdates: true,
-                                webhook: {
-                                    domain: 'tg-bot-download-social-video.vercel.app',
-                                    hookPath: '/webhook',
-                                    port: 4000,
-                                },
-                            });
-                        } catch (error) {
-                                    if (error.response && error.response.error_code === 429) {
-                                                const retryAfter = error.response.parameters.retry_after;
-                                                console.log(`Too many requests. Retrying after ${retryAfter} seconds`);
-                                                setTimeout(async () => {
-                                                            await this.launch({
-                                                                        dropPendingUpdates: true,
-                                                                        webhook: {
-                                                                        domain: 'tg-bot-download-social-video.vercel.app',
-                                                                        hookPath: '/webhook',
-                                                                                    port: 4000,
-                                                                        },
-                                                            });
-                                                }, retryAfter * 1000);
-                                    } else {
-                                                console.error('Error launching bot:', error);
-                                    };
-                        };
+                        await this.launch({
+                                    dropPendingUpdates: true,
+                                    webhook: {
+                                                domain: 'tg-bot-download-social-video.vercel.app',
+                                                hookPath: '/webhook',
+                                                port: 4000,
+                                    },
+                        });
             };
 
             @Start()
