@@ -41,45 +41,45 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                         await ctx.replyWithHTML("⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>");
             };
 
-            @Action('format_mp3')
-            async sendMp3Video(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
+//             @Action('format_mp3')
+//             async sendMp3Video(@Ctx() ctx: Context) {
+//                         await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
 
-                        const info = await this.download.downloadYouTube(this._message);
-                        if (info.error) await ctx.replyWithHTML(info.error);
+//                         const info = await this.download.downloadYouTube(this._message);
+//                         if (info.error) await ctx.replyWithHTML(info.error);
 
-                        await ctx.sendAudio({ source: info.path }, {
-                                    caption: `
-Название видоса: ${info.info_video.title},
-Автор: ${info.author.name},
-Ссылка: ${info.author.channel_url},
-Ссылка на видео: ${info.info_video.video_url},
-Просмотров: ${info.info_video.viewCount},            
-Категория: ${info.info_video.category},            
-Создание видоса: ${info.info_video.publishDate},            
-                                    `,
-                        });
-            };
+//                         await ctx.sendAudio({ source: info.path }, {
+//                                     caption: `
+// Название видоса: ${info.info_video.title},
+// Автор: ${info.author.name},
+// Ссылка: ${info.author.channel_url},
+// Ссылка на видео: ${info.info_video.video_url},
+// Просмотров: ${info.info_video.viewCount},            
+// Категория: ${info.info_video.category},            
+// Создание видоса: ${info.info_video.publishDate},            
+//                                     `,
+//                         });
+//             };
 
-            @Action('format_mp4')
-            async sendMp4Video(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
+//             @Action('format_mp4')
+//             async sendMp4Video(@Ctx() ctx: Context) {
+//                         await ctx.replyWithHTML(`Сообщение принял. Жду ответа от сервера...`);
 
-                        const info = await this.download.downloadYouTube(this._message);
-                        if (info.error) await ctx.replyWithHTML(info.error);
+//                         const info = await this.download.downloadYouTube(this._message);
+//                         if (info.error) await ctx.replyWithHTML(info.error);
 
-                        await ctx.replyWithVideo({ source: info.path }, {
-                                    caption: `
-Название видоса: ${info.info_video.title},
-Автор: ${info.author.name},
-Ссылка: ${info.author.channel_url},
-Ссылка на видео: ${info.info_video.video_url},
-Просмотров: ${info.info_video.viewCount},            
-Категория: ${info.info_video.category},            
-Создание видоса: ${info.info_video.publishDate},            
-                                    `,
-                        });
-            };
+//                         await ctx.replyWithVideo({ source: info.path }, {
+//                                     caption: `
+// Название видоса: ${info.info_video.title},
+// Автор: ${info.author.name},
+// Ссылка: ${info.author.channel_url},
+// Ссылка на видео: ${info.info_video.video_url},
+// Просмотров: ${info.info_video.viewCount},            
+// Категория: ${info.info_video.category},            
+// Создание видоса: ${info.info_video.publishDate},            
+//                                     `,
+//                         });
+//             };
 
             @On('text')
             async onMessage(@Message('text') message: string, @Ctx() ctx: Context) {
