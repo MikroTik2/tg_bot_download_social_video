@@ -19,14 +19,32 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
             
             async onModuleInit() {
-                        await this.launch({
-                                    dropPendingUpdates: true,
-                                    webhook: {
-                                                domain: 'tg-bot-download-social-video.vercel.app',
-                                                hookPath: '/webhook',
-                                                port: 4000,
-                                    },
-                        });
+                        try {
+                                    await this.launch({
+                                                dropPendingUpdates: true,
+                                                webhook: {
+                                                            domain: 'tg-bot-download-social-video.vercel.app',
+                                                            hookPath: '/webhook',
+                                                            port: 4000,
+                                                },
+                                    });
+                        } catch (error) {
+                                    if (error.response && error.response.error_code === 429) {
+                                                const retryAfter = error.response.parameters.retry_after;
+                                                setTimeout(async () => {
+                                                            await this.launch({
+                                                                        dropPendingUpdates: true,
+                                                                        webhook: {
+                                                                        domain: 'tg-bot-download-social-video.vercel.app',
+                                                                        hookPath: '/webhook',
+                                                                        port: 4000,
+                                                                        },
+                                                            });
+                                                }, retryAfter * 500);
+                                    } else {
+                                        console.error('Error launching bot:', error);
+                                    };
+                        };
             };
 
             @Start()
