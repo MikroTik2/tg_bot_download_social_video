@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import * as ytdl from 'ytdl-core';
+import ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
