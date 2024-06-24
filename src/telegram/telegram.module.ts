@@ -3,8 +3,6 @@ import { TelegrafModule } from "nestjs-telegraf";
 import { TelegramService } from "../telegram/telegram.service";
 import { options } from "../telegram/telegram-config.factory";
 import { DownloadModule } from "../download/download.module";
-import { WebhookController } from "./telegram.controller";
-import { Telegraf } from "telegraf";
 
 @Module({
             imports: [
@@ -12,8 +10,7 @@ import { Telegraf } from "telegraf";
                         DownloadModule,
             ],
             
-            controllers: [WebhookController],
-            providers: [TelegramService, Telegraf],
+            providers: [TelegramService],
 })
 
 export class TelegramModule {};
