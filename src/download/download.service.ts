@@ -3,8 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import ytdl from 'ytdl-core';
-import fs from 'fs';
+import * as ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
@@ -21,19 +20,10 @@ export class DownloadService {
         if (url?.startsWith('https://www.youtube.com/')) {
 
             const info = await ytdl.getInfo(url);
-
-            const filePath = `downloads/${info.videoDetails.videoId}.${format}`;
-            const videoStream = ytdl(url, { filter: "audio", quality: "highestvideo" });
-
-            await new Promise((resolve, reject) => {
-                const writableStream = fs.createWriteStream(filePath);
-                videoStream.pipe(writableStream);
-                writableStream.on('finish', resolve);
-                writableStream.on('error', reject);
-            });
+            const stream = ytdl(url, { filter: "audio", quality: "highestvideo" });
 
             return { 
-                path: filePath, 
+                path: stream, 
                 info_video: info.videoDetails,
                 author: info.videoDetails.author
             };
