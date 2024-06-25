@@ -19,9 +19,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             async onModuleInit() {
 
-                await this.telegram.deleteWebhook({
-                    drop_pending_updates: true
-                });
+                await this.telegram.getWebhookInfo();
 
                 await this.launch({
                     dropPendingUpdates: true,
@@ -32,6 +30,8 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
                         maxConnections: 10,
                     }
                 });
+
+                await this.telegram.getWebhookInfo();
             };
 
             @Start()
