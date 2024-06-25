@@ -2,17 +2,17 @@ import { ConfigService } from "@nestjs/config";
 import { TelegrafModuleAsyncOptions, TelegrafModuleOptions } from "nestjs-telegraf";
 
 const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => {
-            return {
-                        token: config.get('TELEGRAM_BOT_TOKEN'),
-                        launchOptions: {
-                              dropPendingUpdates: true,
-                              webhook: {
-                                   domain: 'tg-bot-download.vercel.app',
-                                   port: 4000,
-                                   path: '/webhook',
-                              }
-                        }
-            };
+     return {
+          token: config.get('TELEGRAM_BOT_TOKEN'),
+          launchOptions: {
+               dropPendingUpdates: true,
+               webhook: {
+                    domain: 'tg-bot-download.vercel.app',
+                    port: 4000,
+                    path: '/webhook',
+               }
+          }
+     };
 };
 
 export const options = (): TelegrafModuleAsyncOptions => {
