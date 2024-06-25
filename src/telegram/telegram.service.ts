@@ -19,9 +19,11 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             async onModuleInit() {
 
-                await this.telegram.deleteWebhook({
-                    drop_pending_updates: true
-                });
+                // await this.telegram.deleteWebhook({
+                //     drop_pending_updates: true
+                // });
+
+                await this.webhookCallback('/webhook')
 
                 await this.launch({
                     dropPendingUpdates: true,
