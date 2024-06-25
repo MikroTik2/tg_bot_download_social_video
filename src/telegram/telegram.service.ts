@@ -2,12 +2,12 @@ import { ConfigService } from "@nestjs/config";
 import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '../download/download.service';
-// import { OnModuleInit } from "@nestjs/common";
+import { OnModuleInit } from "@nestjs/common";
 
 type Context = Scenes.SceneContext;
 
 @Update()
-export class TelegramService extends Telegraf<Context>   {
+export class TelegramService extends Telegraf<Context> implements OnModuleInit  {
             private _message;
 
             constructor(
@@ -15,27 +15,24 @@ export class TelegramService extends Telegraf<Context>   {
                         private readonly download: DownloadService,
             ) {
                         super(config.get('TELEGRAM_BOT_TOKEN'));
-
-                        this.launch({
-                            dropPendingUpdates: true,
-                            webhook: {
-                                domain: 'tg-bot-download.vercel.app',
-                                port: 4000,
-                                path: '/webhook',
-                                maxConnections: 10,
-                            }
-                        });
             };
 
-            // async onModuleInit() {
+            async onModuleInit() {
 
-            //     // implements OnModuleInit
-            //     await this.telegram.setWebhook('https://tg-bot-download.vercel.app', {
-            //         drop_pending_updates: true
-            //     });
+                await this.telegram.deleteWebhook({
+                    drop_pending_updates: true
+                });
 
-
-            // };
+                await this.launch({
+                    dropPendingUpdates: true,
+                    webhook: {
+                        domain: 'tg-bot-download.vercel.app',
+                        port: 4000,
+                        path: '/webhook',
+                        maxConnections: 10,
+                    }
+                });
+            };
 
             @Start()
             async onStart(@Ctx() ctx: Context) {
