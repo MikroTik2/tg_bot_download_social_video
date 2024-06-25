@@ -2,13 +2,12 @@ import { ConfigService } from "@nestjs/config";
 import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '../download/download.service';
-import { OnModuleInit, Logger } from "@nestjs/common";
+import { OnModuleInit } from "@nestjs/common";
 
 type Context = Scenes.SceneContext;
 
 @Update()
 export class TelegramService extends Telegraf<Context> implements OnModuleInit {
-            private readonly logger = new Logger(TelegramService.name);
             private _message;
 
             constructor(
@@ -19,6 +18,9 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
 
             async onModuleInit() {
+
+                await this.telegram.getUpdates(100, 100, 0, []);
+
                 await this.launch({
                     dropPendingUpdates: true,
                     webhook: {
