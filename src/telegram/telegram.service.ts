@@ -3,7 +3,6 @@ import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '../download/download.service';
 import { OnModuleInit, Logger } from "@nestjs/common";
-import axios from 'axios';
 
 type Context = Scenes.SceneContext;
 
@@ -20,28 +19,15 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
 
             async onModuleInit() {
-               try {
-
-                    const url = 'https://api.telegram.org/bot' + process.env.TELEGRAM_BOT_TOKEN + '/setWebhook';
-                    const response = await axios.post(url, {
-                        url: 'https://tg-bot-download.vercel.app/webhook'
-                    });
-
-                    console.log(response.data);
-
-                    await this.launch({
-                        dropPendingUpdates: true,
-                        webhook: {
-                            domain: 'tg-bot-download.vercel.app',
-                            port: 4000,
-                            path: '/webhook',
-                            maxConnections: 10,
-                        }
-                    });
-                    this.logger.log('Bot launched successfully');
-                } catch (error) {
-                    this.logger.error('Failed to launch bot', error);
-                }
+                await this.launch({
+                    dropPendingUpdates: true,
+                    webhook: {
+                        domain: 'tg-bot-download.vercel.app',
+                        port: 4000,
+                        path: '/webhook',
+                        maxConnections: 10,
+                    }
+                });
             };
 
             @Start()
