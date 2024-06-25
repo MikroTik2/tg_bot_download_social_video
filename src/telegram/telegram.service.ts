@@ -24,8 +24,9 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                         dropPendingUpdates: true,
                         webhook: {
                             domain: 'tg-bot-download.vercel.app',
-                            port: 4000,
+                            port: 443,
                             path: '/webhook',
+                            maxConnections: 10,
                         }
                     });
                     this.logger.log('Bot launched successfully');

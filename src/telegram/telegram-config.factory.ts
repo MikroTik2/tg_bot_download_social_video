@@ -8,8 +8,9 @@ const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => 
                dropPendingUpdates: true,
                webhook: {
                     domain: 'tg-bot-download.vercel.app',
-                    port: 4000,
+                    port: 443,
                     path: '/webhook',
+                    maxConnections: 10,
                }
           }
      };
