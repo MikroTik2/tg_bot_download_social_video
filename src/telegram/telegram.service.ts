@@ -7,7 +7,7 @@ import { OnModuleInit } from "@nestjs/common";
 type Context = Scenes.SceneContext;
 
 @Update()
-export class TelegramService extends Telegraf<Context> implements OnModuleInit {
+export class TelegramService extends Telegraf<Context> implements OnModuleInit  {
             private _message;
 
             constructor(
@@ -49,7 +49,6 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                         await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
 
                         const info = await this.download.downloadYouTube(this._message);
-                        if (info.error) await ctx.replyWithHTML(info.error);
 
                         await ctx.sendAudio({ source: info.path }, {
                                     caption: `
@@ -69,7 +68,6 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                         await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
 
                         const info = await this.download.downloadYouTube(this._message);
-                        if (info.error) await ctx.replyWithHTML(info.error);
 
                         await ctx.replyWithVideo({ source: info.path }, {
                                     caption: `
@@ -98,9 +96,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                                     });
 
                                     this._message = message;
-                        };
-
-                        if (message.startsWith('https://www.tiktok.com/')) {
+                        } else if (message.startsWith('https://www.tiktok.com/') || message.startsWith('https://vm.tiktok.com/')) {
                                     await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
                                     const info = await this.download.downloadTikTok(message);
 
@@ -114,9 +110,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
                                     });
 
                                     await ctx.sendAudio(info.music[0])
-                        };
-                        
-                        if (message.startsWith('https://www.instagram.com/')) {
+                        } else if (message.startsWith('https://www.instagram.com/')) {
                                     await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
                                     const info = await this.download.downloadInstagram(message);
 
@@ -126,6 +120,8 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 Пользыватель ID: ${info.user_id || 'не найден'}
                                                 `
                                     });
-                        };
+                        } else {
+                            await ctx.replyWithHTML(`Ошибка видое не найдено проверь URL: <code>404</code>`);
+                        }
             };
 };

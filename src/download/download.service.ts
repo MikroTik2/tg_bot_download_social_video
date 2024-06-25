@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import ytdl from 'ytdl-core';
+import * as ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
@@ -17,79 +17,62 @@ export class DownloadService {
     ) {};
             
     async downloadYouTube(url: string) {
-        if (url.startsWith('https://youtu.be/') || url.startsWith('https://www.youtube.com/')) {
+        const info = await ytdl.getInfo(url);
+        const stream = ytdl(url, { filter: "audio", quality: "highestvideo" })
 
-            const info = await ytdl.getInfo(url);
-            console.log(info.videoDetails.videoId)
-            const stream = ytdl(url, { filter: "audio", quality: "highestvideo" })
-
-            return { 
-                path: stream, 
-                info_video: info.videoDetails,
-                author: info.videoDetails.author
-            };
-
-        } else {
-            return { error: 'Неверный URL: ' + url };
+        return { 
+            path: stream, 
+            info_video: info.videoDetails,
+            author: info.videoDetails.author
         };
     };
 
     async downloadInstagram(url: string) {
-        if (url.startsWith('https://www.instagram.com/')) {
-            const options = {
-                method: 'GET',
-                url: this.insta_api,
-                params: {
-                    url: url
-                },
-                headers: {
-                    'X-RapidAPI-Key': this.configService.get('RAPID_API_KEY'),
-                    'X-RapidAPI-Host': this.configService.get('RAPID_HOST_API_INSTA'),
-                },
-            };
-        
-            const response = await lastValueFrom(this.httpService.get(options.url, { params: options.params, headers: options.headers })
-                .pipe(
-                    map(response => response.data),
-                    catchError(error => {
-                        throw new Error('Ошибка при запросе');
-                    }),
-                ));
-
-            return response;
-        } else {
-            return { error: 'Неверный URL: ' + url };  
+        const options = {
+            method: 'GET',
+            url: this.insta_api,
+            params: {
+                url: url
+            },
+            headers: {
+                'X-RapidAPI-Key': this.configService.get('RAPID_API_KEY'),
+                'X-RapidAPI-Host': this.configService.get('RAPID_HOST_API_INSTA'),
+            },
         };
+    
+        const response = await lastValueFrom(this.httpService.get(options.url, { params: options.params, headers: options.headers })
+            .pipe(
+                map(response => response.data),
+                catchError(error => {
+                    throw new Error('Ошибка при запросе');
+                }),
+            ));
+
+        return response;
     };
 
     async downloadTikTok(url: string) {
-        if (url.startsWith('https://www.tiktok.com/' || 'https://vm.tiktok.com/')) {
-
-            const options = {
-                method: "GET",
-                url: this.tt_api,
-                params: {
-                    url: url,
-                },
-                headers: {
-                    "X-RapidAPI-Key": this.configService.get('RAPID_API_KEY'),
-                    "X-RapidAPI-Host": this.configService.get('RAPID_HOST_API_TT'),
-                },
-            };
-
-            const response = await lastValueFrom(this.httpService.get(options.url, { params: options.params, headers: options.headers })
-                .pipe(
-                    map(response => response.data),
-                    catchError(error => {
-                        console.error(error);
-                        throw new Error('Ошибка при запросе');
-                    }),
-                ));
-
-            return response;
-
-        } else {
-            return { error: 'Неверный URL: ' + url };  
+        const options = {
+            method: "GET",
+            url: this.tt_api,
+            params: {
+                url: url,
+            },
+            headers: {
+                "X-RapidAPI-Key": this.configService.get('RAPID_API_KEY'),
+                "X-RapidAPI-Host": this.configService.get('RAPID_HOST_API_TT'),
+            },
         };
+
+        const response = await lastValueFrom(this.httpService.get(options.url, { params: options.params, headers: options.headers })
+            .pipe(
+                map(response => response.data),
+                catchError(error => {
+                    console.error(error);
+                    throw new Error('Ошибка при запросе');
+                }),
+            ));
+
+        return response;
     };
 };
