@@ -2,13 +2,13 @@ import { ConfigService } from "@nestjs/config";
 import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '../download/download.service';
-import { OnModuleInit } from "@nestjs/common";
+import { OnModuleInit, Logger } from "@nestjs/common";
 
 type Context = Scenes.SceneContext;
 
 @Update()
 export class TelegramService extends Telegraf<Context> implements OnModuleInit {
-
+            private readonly logger = new Logger(TelegramService.name);
             private _message;
 
             constructor(
@@ -19,15 +19,19 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
 
             async onModuleInit() {
-               await this.launch({
-                    dropPendingUpdates: true,
-                    webhook: {
-                         domain: 'tg-bot-download.vercel.app',
-                         port: 4000,
-                         path: '/webhook',
-                    }
-                     
-               });
+               try {
+                    await this.launch({
+                        dropPendingUpdates: true,
+                        webhook: {
+                            domain: 'tg-bot-download.vercel.app',
+                            port: 4000,
+                            path: '/webhook',
+                        }
+                    });
+                    this.logger.log('Bot launched successfully');
+                } catch (error) {
+                    this.logger.error('Failed to launch bot', error);
+                }
             };
 
             @Start()
