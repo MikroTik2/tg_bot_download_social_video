@@ -19,12 +19,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             };
 
             async onModuleInit() {
-               await this.createWebhook({
-                    domain: 'tg-bot-download.vercel.app',
-                    drop_pending_updates: true,
-                    path: '/webhook',
-                    max_connections: 40,
-               })
+               await this.telegram.setWebhook('https://tg-bot-download.vercel.app/webhook')
 
                await this.launch();
             };
