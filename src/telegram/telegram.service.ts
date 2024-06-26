@@ -3,6 +3,7 @@ import { Ctx, Message, On, Start, Help, Action, Update } from "nestjs-telegraf";
 import { Scenes, Telegraf  } from "telegraf";
 import { DownloadService } from '../download/download.service';
 import { OnModuleInit } from "@nestjs/common";
+import axios from 'axios';
 
 type Context = Scenes.SceneContext;
 
@@ -16,6 +17,11 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
             ) {
                         super(config.get('TELEGRAM_BOT_TOKEN'));
             };
+
+            private async resetWebhook() {
+                await this.telegram.deleteWebhook();
+                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download.vercel.app/webhook`);
+            }
 
             async onModuleInit() {
 
@@ -36,11 +42,13 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             @Start()
             async onStart(@Ctx() ctx: Context) {
+                        this.resetWebhook()
                         await ctx.replyWithHTML(`👋 Привет - <strong>${ctx.from.first_name}</strong>! Скинь сюда ссылку и я сделаю ВСЕ не я реально сделаю ВСЕ надо будет сосать буду сосать если еще надо будет что сделать сделаю я вообще без понятия АХАХАХА ААХХАА Я СКУФ Я АРИСТОКРАТ Я ШУТНИК Я ДЖОКЕР.`);
             };
 
             @Help()
             async onHelp(@Ctx() ctx: Context) {
+                        this.resetWebhook()
                         await ctx.replyWithHTML("⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>");
             };
 
@@ -84,6 +92,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             @On('text')
             async onMessage(@Message('text') message: string, @Ctx() ctx: Context) {
+                        this.resetWebhook()
                         if (message.startsWith('https://www.youtube.com/') || message.startsWith('https://youtu.be/')) {
 
                                     await ctx.reply('Выберите формат для скачивания:', {
