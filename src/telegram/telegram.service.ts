@@ -25,7 +25,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             async onModuleInit() {
 
-                await this.telegram.getWebhookInfo();
+                await this.resetWebhook();
 
                 await this.launch({
                     dropPendingUpdates: true,
@@ -42,13 +42,11 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             @Start()
             async onStart(@Ctx() ctx: Context) {
-                        this.resetWebhook()
                         await ctx.replyWithHTML(`👋 Привет - <strong>${ctx.from.first_name}</strong>! Скинь сюда ссылку и я сделаю ВСЕ не я реально сделаю ВСЕ надо будет сосать буду сосать если еще надо будет что сделать сделаю я вообще без понятия АХАХАХА ААХХАА Я СКУФ Я АРИСТОКРАТ Я ШУТНИК Я ДЖОКЕР.`);
             };
 
             @Help()
             async onHelp(@Ctx() ctx: Context) {
-                        this.resetWebhook()
                         await ctx.replyWithHTML("⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>");
             };
 
@@ -92,7 +90,6 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
             @On('text')
             async onMessage(@Message('text') message: string, @Ctx() ctx: Context) {
-                        this.resetWebhook()
                         if (message.startsWith('https://www.youtube.com/') || message.startsWith('https://youtu.be/')) {
 
                                     await ctx.reply('Выберите формат для скачивания:', {
