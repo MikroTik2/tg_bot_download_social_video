@@ -18,14 +18,10 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
                         super(config.get('TELEGRAM_BOT_TOKEN'));
             };
 
-            private async resetWebhook() {
-                await this.telegram.deleteWebhook();
-                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download.vercel.app/webhook`);
-            }
-
             async onModuleInit() {
 
-                await this.resetWebhook();
+                await this.telegram.deleteWebhook();
+                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download.vercel.app/webhook`);
 
                 await this.launch({
                     dropPendingUpdates: true,
