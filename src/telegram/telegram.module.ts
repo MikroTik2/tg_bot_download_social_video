@@ -5,12 +5,12 @@ import { options } from "../telegram/telegram-config.factory";
 import { DownloadModule } from "../download/download.module";
 
 @Module({
-            imports: [
-                        TelegrafModule.forRootAsync(options()),
-                        DownloadModule,
-            ],
-            
-            providers: [TelegramService],
+     imports: [
+          TelegrafModule.forRootAsync(options()),
+          DownloadModule,
+     ],
+     
+     providers: [TelegramService],
 })
 
 export class TelegramModule {};

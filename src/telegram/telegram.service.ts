@@ -9,53 +9,53 @@ type Context = Scenes.SceneContext;
 
 @Update()
 export class TelegramService extends Telegraf<Context> implements OnModuleInit {
-            private _message;
+    private _message;
 
-            constructor(
-                        private readonly config: ConfigService,
-                        private readonly download: DownloadService,
-            ) {
-                        super(config.get('TELEGRAM_BOT_TOKEN'));
-            };
+    constructor(
+                private readonly config: ConfigService,
+                private readonly download: DownloadService,
+    ) {
+                super(config.get('TELEGRAM_BOT_TOKEN'));
+    };
 
-            async onModuleInit() {
+    async onModuleInit() {
 
-                await this.telegram.deleteWebhook();
-                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download-social-video.vercel.app/webhook`);
+        await this.telegram.deleteWebhook();
+        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download-social-video.vercel.app/webhook`);
 
-                await this.launch({
-                    dropPendingUpdates: true,
-                    webhook: {
-                        domain: 'tg-bot-download.vercel.app',
-                        port: 4000,
-                        path: '/webhook',
-                        maxConnections: 10,
-                    }
-                });
-            };
+        await this.launch({
+            dropPendingUpdates: true,
+            webhook: {
+                domain: 'tg-bot-download-social-video.vercel.app',
+                port: 4000,
+                path: '/webhook',
+                maxConnections: 10,
+            }
+        });
+    };
 
-            @Start()
-            async onStart(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML(`👋 Привет - <strong>${ctx.from.first_name}</strong>! Скинь сюда ссылку и я сделаю ВСЕ не я реально сделаю ВСЕ надо будет сосать буду сосать если еще надо будет что сделать сделаю я вообще без понятия АХАХАХА ААХХАА Я СКУФ Я АРИСТОКРАТ Я ШУТНИК Я ДЖОКЕР.`);
-            };
+    @Start()
+    async onStart(@Ctx() ctx: Context) {
+                await ctx.replyWithHTML(`👋 Привет - <strong>${ctx.from.first_name}</strong>! Скинь сюда ссылку и я сделаю ВСЕ не я реально сделаю ВСЕ надо будет сосать буду сосать если еще надо будет что сделать сделаю я вообще без понятия АХАХАХА ААХХАА Я СКУФ Я АРИСТОКРАТ Я ШУТНИК Я ДЖОКЕР.`);
+    };
 
-            @Help()
-            async onHelp(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML("⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>");
-            };
+    @Help()
+    async onHelp(@Ctx() ctx: Context) {
+                await ctx.replyWithHTML("⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>");
+    };
 
-            @Action('format_mp3')
-            async sendMp3Video(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
+    @Action('format_mp3')
+    async sendMp3Video(@Ctx() ctx: Context) {
+        await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
 
-                        const info = await this.download.downloadYouTube(this._message);
+        const info = await this.download.downloadYouTube(this._message);
 
-                        if (info.limit) {
-                            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
-                        };
+        if (info.limit) {
+            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
+        };
 
-                        await ctx.sendAudio({ source: info.path }, {
-                                    caption: `
+        await ctx.sendAudio({ source: info.path }, {
+            caption: `
 Название видоса: ${info.info_video.title},
 Автор: ${info.author.name},
 Ссылка: ${info.author.channel_url},
@@ -63,23 +63,23 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 Просмотров: ${info.info_video.viewCount},            
 Категория: ${info.info_video.category},            
 Создание видоса: ${info.info_video.publishDate},            
-                                    `,
-                        });
-            };
+                    `,
+            });
+        };
 
-            @Action('format_mp4')
-            async sendMp4Video(@Ctx() ctx: Context) {
-                        await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
+    @Action('format_mp4')
+    async sendMp4Video(@Ctx() ctx: Context) {
+        await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
 
-                        const info = await this.download.downloadYouTube(this._message);
+        const info = await this.download.downloadYouTube(this._message);
 
-                        if (info.limit) {
-                            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
-                            return;
-                        };
+        if (info.limit) {
+            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
+            return;
+        };
 
-                        await ctx.replyWithVideo({ source: info.path }, {
-                                    caption: `
+        await ctx.replyWithVideo({ source: info.path }, {
+            caption: `
 Название видоса: ${info.info_video.title},
 Автор: ${info.author.name},
 Ссылка: ${info.author.channel_url},
@@ -87,50 +87,51 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 Просмотров: ${info.info_video.viewCount},            
 Категория: ${info.info_video.category},            
 Создание видоса: ${info.info_video.publishDate},            
-                                    `,
-                        });
-            };
+                    `,
+            });
+        };
 
-            @On('text')
-            async onMessage(@Message('text') message: string, @Ctx() ctx: Context) {
-                        if (message.startsWith('https://www.youtube.com/') || message.startsWith('https://youtu.be/')) {
+    @On('text')
+    async onMessage(@Message('text') message: string, @Ctx() ctx: Context) {
+        if (message.startsWith('https://www.youtube.com/') || message.startsWith('https://youtu.be/')) {
 
-                                    await ctx.reply('Выберите формат для скачивания:', {
-                                                reply_markup: {
-                                                            inline_keyboard: [
-                                                            [{ text: 'MP4', callback_data: 'format_mp4' }],
-                                                            [{ text: 'MP3', callback_data: 'format_mp3' }],
-                                                            ],
-                                                },
-                                    });
+            await ctx.reply('Выберите формат для скачивания:', {
+                reply_markup: {
+                    inline_keyboard: [
+                    [{ text: 'MP4', callback_data: 'format_mp4' }],
+                    [{ text: 'MP3', callback_data: 'format_mp3' }],
+                    ],
+                },
+            });
 
-                                    this._message = message;
-                        } else if (message.startsWith('https://www.tiktok.com/') || message.startsWith('https://vm.tiktok.com/')) {
-                                    await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
-                                    const info = await this.download.downloadTikTok(message);
+            this._message = message;
+        } else if (message.startsWith('https://www.tiktok.com/') || message.startsWith('https://vm.tiktok.com/')) {
+            await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
+            const info = await this.download.downloadTikTok(message);
 
-                                    await ctx.replyWithVideo(info.video[0], {
-                                                caption: `
+            await ctx.replyWithVideo(info.video[0], {
+                caption: `
 Описание: ${info.description[0]},
 Автор: ${info.author[0]},
 Регион: ${info.region[0]},
 Видео ID: ${info.videoid[0]},
-                                                `
-                                    });
+                        `
+            });
 
-                                    await ctx.sendAudio(info.music[0])
-                        } else if (message.startsWith('https://www.instagram.com/')) {
-                                    await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
-                                    const info = await this.download.downloadInstagram(message);
+            await ctx.sendAudio(info.music[0]);
 
-                                    await ctx.replyWithVideo(info.media || info.stories[0].media, {
-                                                caption: `
+        } else if (message.startsWith('https://www.instagram.com/')) {
+            await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
+            const info = await this.download.downloadInstagram(message);
+
+            await ctx.replyWithVideo(info.media || info.stories[0].media, {
+                caption: `
 Автор: ${info.title || info.username}
 Пользыватель ID: ${info.user_id || 'не найден'}
-                                                `
-                                    });
-                        } else {
-                            await ctx.replyWithHTML(`Ошибка видое не найдено проверь URL: <code>404</code>`);
-                        }
-            };
+                        `
+            });
+        } else {
+            await ctx.replyWithHTML(`Ошибка видое не найдено проверь URL: <code>404</code>`);
+        }
+    };
 };

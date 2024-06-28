@@ -10,4 +10,5 @@ import { DownloadService } from './download.service';
     providers: [DownloadService],
     exports: [DownloadService],
 })
-export class DownloadModule {}
+
+export class DownloadModule {};

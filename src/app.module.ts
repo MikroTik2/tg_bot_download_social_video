@@ -3,14 +3,13 @@ import { ConfigModule } from "@nestjs/config";
 import { TelegramModule } from "./telegram/telegram.module";
 
 @Module({
-  imports: [
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
 
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-
-    TelegramModule,
-  ],
+        TelegramModule,
+    ],
 })
 
 export class AppModule {};

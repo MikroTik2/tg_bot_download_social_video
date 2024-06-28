@@ -17,8 +17,8 @@ const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => 
 };
 
 export const options = (): TelegrafModuleAsyncOptions => {
-            return {
-                        inject: [ConfigService],
-                        useFactory: (config: ConfigService) => telegrafModuleOptions(config)
-            };
+     return {
+          inject: [ConfigService],
+          useFactory: (config: ConfigService) => telegrafModuleOptions(config)
+     };
 };
