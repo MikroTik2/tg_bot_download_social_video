@@ -8,7 +8,7 @@ import axios from 'axios';
 type Context = Scenes.SceneContext;
 
 @Update()
-export class TelegramService extends Telegraf<Context> implements OnModuleInit  {
+export class TelegramService extends Telegraf<Context> implements OnModuleInit {
             private _message;
 
             constructor(
@@ -21,7 +21,7 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
             async onModuleInit() {
 
                 await this.telegram.deleteWebhook();
-                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download.vercel.app/webhook`);
+                await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download-social-video.vercel.app/webhook`);
 
                 await this.launch({
                     dropPendingUpdates: true,
@@ -50,6 +50,10 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
 
                         const info = await this.download.downloadYouTube(this._message);
 
+                        if (info.limit) {
+                            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
+                        };
+
                         await ctx.sendAudio({ source: info.path }, {
                                     caption: `
 Название видоса: ${info.info_video.title},
@@ -68,6 +72,11 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit  
                         await ctx.replyWithHTML(`<code>Сообщение принял. Жду ответа от сервера...</code>`);
 
                         const info = await this.download.downloadYouTube(this._message);
+
+                        if (info.limit) {
+                            await ctx.replyWithHTML(`<b>Ошибка:</b> ${info.limit}`);
+                            return;
+                        };
 
                         await ctx.replyWithVideo({ source: info.path }, {
                                     caption: `

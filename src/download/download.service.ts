@@ -7,7 +7,6 @@ import ytdl from 'ytdl-core';
 
 @Injectable()
 export class DownloadService {
-
     private insta_api = 'https://instagram-story-downloader-media-downloader.p.rapidapi.com/index';
     private tt_api = 'https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index';
 
@@ -15,10 +14,17 @@ export class DownloadService {
         private readonly configService: ConfigService,
         private readonly httpService: HttpService,
     ) {};
-            
+
     async downloadYouTube(url: string) {
         const info = await ytdl.getInfo(url);
-        const stream = ytdl(url, { filter: "audio", quality: "highestvideo" })
+        const size = parseInt(info.formats[0].contentLength || '0', 10);
+        const sizeMB = size / 1048576;
+
+        if (parseInt(sizeMB.toFixed(1)) > 50.0) {
+            return { limit: 'Превышен лимит скачивания в 50 МБ: размер видео - ' + sizeMB.toFixed(1) + 'МБ' }
+        };
+
+        const stream = ytdl(url, { filter: "audio", quality: "highestvideo" });
 
         return { 
             path: stream, 
@@ -26,6 +32,7 @@ export class DownloadService {
             author: info.videoDetails.author
         };
     };
+
 
     async downloadInstagram(url: string) {
         const options = {
