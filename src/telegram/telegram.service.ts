@@ -25,12 +25,12 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 
         await this.launch({
             dropPendingUpdates: true,
-            // webhook: {
-            //     domain: 'tg-bot-download-social-video.vercel.app',
-            //     port: 4000,
-            //     path: '/webhook',
-            //     maxConnections: 10,
-            // }
+            webhook: {
+                domain: 'tg-bot-download-social-video.vercel.app',
+                port: 4000,
+                path: '/webhook',
+                maxConnections: 10,
+            }
         });
     };
 
