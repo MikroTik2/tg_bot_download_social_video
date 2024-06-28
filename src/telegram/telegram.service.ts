@@ -20,8 +20,8 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 
     async onModuleInit() {
 
-        await this.telegram.deleteWebhook();
-        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download-social-video.vercel.app/webhook`);
+        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
+        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook?url=https://tg-bot-download-social-video.vercel.app/webhook`)
 
         await this.launch({
             dropPendingUpdates: true,
