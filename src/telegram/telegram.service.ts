@@ -20,17 +20,17 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 
     async onModuleInit() {
 
-        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
+        // await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
 
-        await this.launch({
-            dropPendingUpdates: true,
-            webhook: {
-                domain: 'tg-bot-download-social-video.vercel.app',
-                port: 4000,
-                path: '/webhook',
-                maxConnections: 10,
-            }
-        });
+        // await this.launch({
+        //     dropPendingUpdates: true,
+        //     webhook: {
+        //         domain: 'tg-bot-download-social-video.vercel.app',
+        //         port: 4000,
+        //         path: '/webhook',
+        //         maxConnections: 10,
+        //     }
+        // });
     };
 
     @Start()
@@ -45,6 +45,14 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
         await ctx.replyWithHTML(
             `⁉️<b> Если у тебя есть проблемы.</b> \n✉️ <b>Напишите мне</b> <a href='https://t.me/d16ddd348'>@d16ddd348</a><b>.</b>`
         );
+    };
+
+    @On('document')
+    async onDocument(@Message() message: any, @Ctx() ctx: Context) {
+        await ctx.replyWithHTML(`<code>Сообщение принял. жду ответа от сервера...</code>`);
+        const info = await this.telegram.getFileLink(message.document.file_id);
+
+        await ctx.replyWithHTML(`url: <code>${info.href}</code>`);
     };
 
     @On('text')
