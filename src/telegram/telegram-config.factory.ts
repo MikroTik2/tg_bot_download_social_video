@@ -1,5 +1,5 @@
-import { ConfigService } from "@nestjs/config";
 import { TelegrafModuleAsyncOptions, TelegrafModuleOptions } from "nestjs-telegraf";
+import { ConfigService } from "@nestjs/config";
 
 const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => {
      return {
