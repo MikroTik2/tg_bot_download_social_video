@@ -1,4 +1,4 @@
-import { DownloadService } from '@/download/download.service';
+import { DownloadService } from '../download/download.service';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 

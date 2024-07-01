@@ -1,6 +1,6 @@
 import { Ctx, Message, On, Start, Help, Update } from "nestjs-telegraf";
-import { CloudinaryService } from "@/cloudinary/cloudinary.service";
-import { DownloadService } from '@/download/download.service';
+import { CloudinaryService } from "../cloudinary/cloudinary.service";
+import { DownloadService } from '../download/download.service';
 import { ConfigService } from "@nestjs/config";
 import { OnModuleInit } from "@nestjs/common";
 import { Scenes, Telegraf  } from "telegraf";
