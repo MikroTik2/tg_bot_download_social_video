@@ -20,17 +20,17 @@ export class TelegramService extends Telegraf<Context> implements OnModuleInit {
 
     async onModuleInit() {
 
-        // await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
+        await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
 
-        // await this.launch({
-        //     dropPendingUpdates: true,
-        //     webhook: {
-        //         domain: 'tg-bot-download-social-video.vercel.app',
-        //         port: 4000,
-        //         path: '/webhook',
-        //         maxConnections: 10,
-        //     }
-        // });
+        await this.launch({
+            dropPendingUpdates: true,
+            webhook: {
+                domain: 'tg-bot-download-social-video.vercel.app',
+                port: 4000,
+                path: '/webhook',
+                maxConnections: 10,
+            }
+        });
     };
 
     @Start()
