@@ -11,8 +11,8 @@ const telegrafModuleOptions = (config: ConfigService): TelegrafModuleOptions => 
                     port: 4000,
                     path: '/webhook',
                     maxConnections: 10,
-               }
-          }
+               },
+          },
      };
 };
 
